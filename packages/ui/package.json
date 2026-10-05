@@ -12,6 +12,9 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit"
   },
@@ -22,6 +25,7 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "eslint": "^9.39.1",
+    "prettier": "^3.7.4",
     "typescript": "5.9.2"
   },
   "dependencies": {
