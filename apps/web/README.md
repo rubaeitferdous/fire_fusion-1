@@ -2,23 +2,32 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Use Node.js 20.9 or newer. The repository lockfile is managed by Bun 1.2.21;
+install dependencies from the repository root with:
+
+```bash
+bun install --frozen-lockfile
+```
+
+After installing dependencies, start both web apps from the repository root:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To start only this app from the repository root, run
+`npm run dev -- --filter=web`. Alternatively, run `npm run dev` from
+`apps/web`. Open [http://localhost:3000](http://localhost:3000) in your
+browser. The root `.npmrc` allows npm to run scripts despite the unchanged
+workspace's Bun-only `devEngines` declaration.
+
+The map, calendar, and cluster evidence screens fetch the synthetic fixture at
+`public/resources/data/demo.json`. Its provenance identifies the values as
+illustrative demo data; they are not live fire observations.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to optimize its Inter, Space Grotesk, and JetBrains Mono fonts.
 
 ## Learn More
 
