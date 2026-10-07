@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { PrototypeFrame } from "@/components/layout/PrototypeFrame";
 
 export default function Home() {
-  redirect("/map");
+  return <PrototypeFrame screen="overview" />;
 }

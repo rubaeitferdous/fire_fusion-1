@@ -1,45 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# FireFusion Web
 
-## Getting Started
+FireFusion is a responsive web prototype for exploring satellite fire detections
+from the MODIS and VIIRS sensor families. It presents map markers, daily
+aggregates, cluster evidence, validation status, and methodology in a single
+interactive interface.
 
-Use Node.js 20.9 or newer. The repository lockfile is managed by Bun 1.2.21;
-install dependencies from the repository root with:
+> **Important:** This prototype is not a wildfire prediction or safety tool. It
+> does not forecast fire spread, danger, or evacuation routes. The included
+> dataset is illustrative demo data, not measured or live fire observations.
+
+## Contents
+
+- [Requirements](#requirements)
+- [Run locally](#run-locally)
+- [Available routes](#available-routes)
+- [How the app is organized](#how-the-app-is-organized)
+- [Demo data and limitations](#demo-data-and-limitations)
+- [Checks](#checks)
+- [Related documentation](#related-documentation)
+
+## Requirements
+
+- Node.js 20.9 or newer
+- Bun 1.2.21, the package manager version specified by the repository
+
+Install dependencies from the repository root:
 
 ```bash
 bun install --frozen-lockfile
 ```
 
-After installing dependencies, start both web apps from the repository root:
+Do not install dependencies from this directory; the app is part of the
+repository's Bun workspace.
+
+## Run locally
+
+From the repository root, start only the web workspace:
 
 ```bash
-npm run dev
+bun run dev --filter=web
 ```
 
-To start only this app from the repository root, run
-`npm run dev -- --filter=web`. Alternatively, run `npm run dev` from
-`apps/web`. Open [http://localhost:3000](http://localhost:3000) in your
-browser. The root `.npmrc` allows npm to run scripts despite the unchanged
-workspace's Bun-only `devEngines` declaration.
+Or start the app from this directory:
 
-The map, calendar, and cluster evidence screens fetch the synthetic fixture at
-`public/resources/data/demo.json`. Its provenance identifies the values as
-illustrative demo data; they are not live fire observations.
+```bash
+bun run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open [http://localhost:3000](http://localhost:3000). Run the app through the
+development server rather than opening the HTML prototype directly: the page
+loads its fixture using a same-origin request to `/data/dummy-data.json`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to optimize its Inter, Space Grotesk, and JetBrains Mono fonts.
+To create and serve a production build from this directory:
 
-## Learn More
+```bash
+bun run build
+bun run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Available routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Route | Screen |
+|---|---|
+| `/` | Overview |
+| `/map` | Fire activity map |
+| `/calendar` | Burning activity calendar |
+| `/evidence` | Cluster evidence, choosing a default cluster |
+| `/evidence/[clusterId]` | Cluster evidence for the specified cluster |
+| `/validation` | Validation metrics and demo run control |
+| `/methods` | Methods and limitations |
+| `/seasonal` | Redirects to `/calendar` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The prototype also supports direct links with `screen` and `cluster` query
+parameters. The Next.js route pages set the initial screen and, for an evidence
+URL, the selected cluster.
 
-## Deploy on Vercel
+## How the app is organized
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The web app is a Next.js App Router workspace. Most route pages are lightweight
+wrappers that select a screen in the prototype:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/` contains route pages, the root layout, and shared app-level styles.
+- `components/layout/PrototypeFrame.tsx` embeds the prototype in a responsive
+  iframe and passes route state through its query string.
+- `public/resources/FireFusion_Prototype_v14.html` contains the interactive
+  screens, styling, and client-side behaviors.
+- `public/data/dummy-data.json` is the demo fixture served at `/data/dummy-data.json`.
+- `config/nav.ts` defines the outer application navigation.
+
+The HTML prototype fetches and validates the fixture before drawing the map or
+calendar. It shows a loading status while the request is pending and a visible
+error message if the request or data validation fails. The map, calendar, and
+cluster details are rendered in the iframe; Next.js provides the app routes and
+embedding shell.
+
+## Demo data and limitations
+
+The data in `public/data/dummy-data.json` is labeled as demo-only and not
+measured. In particular:
+
+- Map data is provided only for **15 March 2026**.
+- Calendar values are illustrative samples, not actual daily counts.
+- Map `x` and `y` positions are placeholder percentages, not geographic
+  coordinates.
+- Validation results, seasonal anomaly percentiles, event scores, and real score
+  components are not implemented. The validation button is a timed UI demo and
+  performs no calculation.
+
+Do not present these values as real observations. The full data-field
+definitions, expected shapes, and implementation gaps are documented in the
+[data contract](./public/resources/docs/DATA_CONTRACT.md).
+
+## Checks
+
+Run these workspace checks from `apps/web`:
+
+```bash
+bun run lint
+bun run check-types
+bun run build
+```
+
+There is no automated test script defined for this workspace. After changing
+the standalone HTML prototype, use the
+[smoke-test checklist](./public/resources/docs/SMOKE_TEST.md) to review its
+screens, interactions, responsive behavior, and accessibility controls.
+
+## Related documentation
+
+- [Prototype instructions and feature notes](./public/resources/instructions.md)
+- [Data contract and known gaps](./public/resources/docs/DATA_CONTRACT.md)
+- [Prototype smoke-test checklist](./public/resources/docs/SMOKE_TEST.md)

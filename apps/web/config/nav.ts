@@ -1,34 +1,19 @@
-const navigationByPath = {
-  "/map": [
-    { label: "Calendar", href: "/calendar" },
-    { label: "Cluster evidence", href: "/evidence" },
-    { label: "Methods", href: "/methods" },
-  ],
-  "/calendar": [
-    { label: "Map", href: "/map" },
-    { label: "Cluster evidence", href: "/evidence" },
-    { label: "Methods", href: "/methods" },
-  ],
-  "/evidence": [
-    { label: "Map", href: "/map" },
-    { label: "Calendar", href: "/calendar" },
-  ],
-  "/methods": [
-    { label: "Map", href: "/map" },
-    { label: "Calendar", href: "/calendar" },
-    { label: "Evidence", href: "/evidence" },
-  ],
-  "/validation": [
-    { label: "Cluster evidence", href: "/evidence" },
-    { label: "Calendar", href: "/calendar" },
-    { label: "Methods", href: "/methods" },
-  ],
-  "/seasonal": [
-    { label: "Calendar", href: "/calendar" },
-    { label: "Validation", href: "/validation" },
-  ],
-} as const;
+const navigation = [
+  { label: "Overview", href: "/" },
+  { label: "Map", href: "/map" },
+  { label: "Calendar", href: "/calendar" },
+  { label: "Cluster evidence", href: "/evidence" },
+  { label: "Validation", href: "/validation" },
+  { label: "Methods", href: "/methods" },
+  { label: "Seasonal", href: "/seasonal" },
+] as const;
 
 export function getNavigationForPath(path: string) {
-  return navigationByPath[path as keyof typeof navigationByPath] ?? [];
+  return navigation.map((item) => ({
+    ...item,
+    active:
+      item.href === "/evidence"
+        ? path.startsWith("/evidence")
+        : path === item.href || (item.href === "/" && path === "/"),
+  }));
 }
