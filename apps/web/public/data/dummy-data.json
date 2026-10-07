@@ -1,0 +1,170 @@
+{
+  "status": "ok",
+  "label": "DEMO FIXTURE - NOT MEASURED",
+  "default_map_date": "2026-03-15",
+  "map_data_by_date": {
+    "2026-03-15": [
+      {
+        "id": "0192",
+        "x": 42,
+        "y": 38,
+        "n_modis": 1,
+        "n_viirs": 5,
+        "corroborated": true,
+        "max_frp": 52.3,
+        "best_conf_class": 2,
+        "conf": "High"
+      },
+      {
+        "id": "0201",
+        "x": 55,
+        "y": 52,
+        "n_modis": 0,
+        "n_viirs": 3,
+        "corroborated": false,
+        "max_frp": 18.2,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0150",
+        "x": 38,
+        "y": 60,
+        "n_modis": 1,
+        "n_viirs": 4,
+        "corroborated": true,
+        "max_frp": 41.0,
+        "best_conf_class": 2,
+        "conf": "High"
+      },
+      {
+        "id": "0177",
+        "x": 60,
+        "y": 30,
+        "n_modis": 1,
+        "n_viirs": 0,
+        "corroborated": false,
+        "max_frp": 30.5,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0205",
+        "x": 48,
+        "y": 70,
+        "n_modis": 0,
+        "n_viirs": 2,
+        "corroborated": false,
+        "max_frp": 12.4,
+        "best_conf_class": 0,
+        "conf": "Low"
+      },
+      {
+        "id": "0210",
+        "x": 66,
+        "y": 48,
+        "n_modis": 0,
+        "n_viirs": 6,
+        "corroborated": false,
+        "max_frp": 22.9,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0160",
+        "x": 32,
+        "y": 44,
+        "n_modis": 1,
+        "n_viirs": 3,
+        "corroborated": true,
+        "max_frp": 38.7,
+        "best_conf_class": 2,
+        "conf": "High"
+      },
+      {
+        "id": "0220",
+        "x": 70,
+        "y": 62,
+        "n_modis": 0,
+        "n_viirs": 2,
+        "corroborated": false,
+        "max_frp": 9.8,
+        "best_conf_class": 0,
+        "conf": "Low"
+      },
+      {
+        "id": "0165",
+        "x": 50,
+        "y": 25,
+        "n_modis": 1,
+        "n_viirs": 0,
+        "corroborated": false,
+        "max_frp": 27.1,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0230",
+        "x": 58,
+        "y": 75,
+        "n_modis": 0,
+        "n_viirs": 4,
+        "corroborated": false,
+        "max_frp": 15.6,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      }
+    ]
+  },
+  "calendar_fixture": {
+    "2026-03-15": {
+      "raw_event_count": 247,
+      "harmonized_event_count": 96,
+      "interval_lo": 85,
+      "interval_hi": 107,
+      "max_frp": 52.3,
+      "source": "illustrative sample - demo only"
+    },
+    "2026-01-08": {
+      "raw_event_count": 131,
+      "harmonized_event_count": 58,
+      "interval_lo": 49,
+      "interval_hi": 67,
+      "max_frp": 33.1,
+      "source": "illustrative sample - demo only"
+    },
+    "2026-02-19": {
+      "raw_event_count": 188,
+      "harmonized_event_count": 81,
+      "interval_lo": 70,
+      "interval_hi": 92,
+      "max_frp": 44.7,
+      "source": "illustrative sample - demo only"
+    },
+    "2026-03-02": {
+      "raw_event_count": 204,
+      "harmonized_event_count": 88,
+      "interval_lo": 76,
+      "interval_hi": 99,
+      "max_frp": 38.9,
+      "source": "illustrative sample - demo only"
+    },
+    "2026-04-11": {
+      "raw_event_count": 163,
+      "harmonized_event_count": 70,
+      "interval_lo": 60,
+      "interval_hi": 81,
+      "max_frp": 29.4,
+      "source": "illustrative sample - demo only"
+    },
+    "2026-05-27": {
+      "raw_event_count": 97,
+      "harmonized_event_count": 39,
+      "interval_lo": 32,
+      "interval_hi": 47,
+      "max_frp": 21.0,
+      "source": "illustrative sample - demo only"
+    }
+  },
+  "anomaly": null
+}
