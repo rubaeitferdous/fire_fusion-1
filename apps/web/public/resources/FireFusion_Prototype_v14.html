@@ -88,9 +88,6 @@ h1,h2,h3,h4{ font-family:'Space Grotesk', 'Inter', sans-serif; font-weight:700; 
   background:var(--panel);
   display:flex; align-items:center; gap:6px; white-space:nowrap;
 }
-.chip.data-loading{ color:var(--warn); }
-.chip.data-loaded{ color:var(--good); border-color:rgba(95,212,138,0.3); }
-.chip.data-error{ color:#ff9182; border-color:rgba(255,107,53,0.4); }
 .data-load-error{
   position:absolute; z-index:25; top:12px; right:16px; left:16px;
   padding:12px 16px; border:1px solid rgba(255,107,53,0.45);
@@ -113,7 +110,7 @@ h1,h2,h3,h4{ font-family:'Space Grotesk', 'Inter', sans-serif; font-weight:700; 
   border-bottom:1px solid var(--border-soft);
   position:sticky; top:0; z-index:30; flex-shrink:0;
 }
-.topnav-brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.topnav-brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; border:0; padding:0; color:inherit; background:transparent; cursor:pointer; }
 .topnav-mark{
   width:32px; height:32px; border-radius:var(--radius-s);
   background:var(--bg);
@@ -280,22 +277,43 @@ h1,h2,h3,h4{ font-family:'Space Grotesk', 'Inter', sans-serif; font-weight:700; 
 .section-head h3{ font-size:18px; font-weight:600; letter-spacing:-0.01em; }
 
 .pipeline{
-  display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; margin-bottom:32px; align-items:stretch;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:32px;
 }
 .pipe-step{
-  min-width:172px;
+  min-width:0;
+  min-height:136px;
   background:var(--panel);
   border:1px solid var(--border-soft);
   border-radius:var(--radius-m);
   padding:16px 16px 18px;
-  flex-shrink:0;
+}
+.pipe-step:nth-child(2),
+.pipe-step:nth-child(4),
+.pipe-step:nth-child(5){
+  grid-column:span 2;
 }
 .pipe-step .pn{ font-size:11px; font-weight:600; letter-spacing:0.04em; color:var(--text-dim); margin-bottom:10px; text-transform:uppercase; }
 .pipe-step .pt{ font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; margin-bottom:6px; line-height:1.3; }
 .pipe-step .pd{ font-size:12px; color:var(--text-mid); line-height:1.5; }
+.pipe-visual{ display:grid; gap:10px; margin-top:16px; }
+.pipe-metric{ display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:3px 8px; }
+.pipe-metric-label{ color:var(--text-dim); font-size:10px; line-height:1.3; }
+.pipe-metric-value{ color:var(--text); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; }
+.pipe-metric-track{ grid-column:1 / -1; height:4px; overflow:hidden; border-radius:4px; background:var(--border-soft); }
+.pipe-metric-fill{ display:block; width:var(--bar-width); height:100%; border-radius:inherit; background:var(--accent); }
 .pipe-step.done{ border-color:var(--sat-dim); }
 .pipe-step.done .pn{ color:var(--accent); }
 .pipe-step.upcoming{ border-style:dashed; opacity:0.8; }
+@media (max-width:900px){
+  .pipeline{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .pipe-step:nth-child(n){ grid-column:span 1; }
+}
+@media (max-width:520px){
+  .pipeline{ grid-template-columns:minmax(0,1fr); }
+}
 
 .region-grid{
   display:grid; grid-template-columns:1.5fr 1fr; grid-template-rows:auto auto; gap:16px;
@@ -309,8 +327,14 @@ h1,h2,h3,h4{ font-family:'Space Grotesk', 'Inter', sans-serif; font-weight:700; 
 .alert-row:first-of-type{ border-top:none; padding-top:0; }
 .alert-row .at{ font-size:13px; color:var(--text); margin-bottom:3px; font-weight:500; }
 .alert-row .ad{ font-size:12px; color:var(--text-dim); line-height:1.55; }
-.mini-bar-wrap{ display:flex; align-items:center; justify-content:center; gap:3px; height:72px; margin-top:8px; }
+.mini-bar-wrap{ display:flex; align-items:stretch; justify-content:space-around; gap:8px; height:88px; margin-top:8px; }
 .mini-bar-note{ font-size:12px; color:var(--text-dim); text-align:center; }
+.mini-bar-pair{ display:flex; min-width:0; flex:1; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px; }
+.mini-bar-columns{ display:flex; width:100%; height:68px; align-items:flex-end; justify-content:center; gap:3px; }
+.mini-bar-columns i{ width:min(34%,16px); min-height:2px; border-radius:3px 3px 0 0; }
+.mini-bar-columns i:first-child{ background:var(--fire-dim); }
+.mini-bar-columns i:last-child{ background:var(--sat-dim); }
+.mini-bar-date{ color:var(--text-dim); font-size:9px; line-height:1; white-space:nowrap; }
 
 /* ================= SCREEN 2 — MAP ================= */
 .map-wrap{ height:100%; display:flex; flex-direction:column; }
@@ -569,8 +593,6 @@ h1,h2,h3,h4{ font-family:'Space Grotesk', 'Inter', sans-serif; font-weight:700; 
   cursor:pointer; font-family:'Inter',sans-serif;
 }
 .toc-chip.sel{ border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
-#cache-log-body{ overflow:hidden; max-height:0; opacity:0; transition:max-height .25s ease, opacity .2s ease, margin-top .25s ease, padding-top .25s ease; margin-top:0; padding-top:0; border-top:none; }
-#cache-log-body.open{ max-height:300px; opacity:1; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-soft); }
 
 .method-block{ margin-bottom:40px; }
 .method-block h3{ font-size:20px; font-weight:700; margin-bottom:12px; display:flex; align-items:baseline; gap:12px; }
@@ -785,13 +807,12 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
 
   <!-- ============ UNIVERSAL TOP NAV ============ -->
   <nav class="topnav" aria-label="Primary">
-    <div class="topnav-brand">
+    <button class="topnav-brand" type="button" aria-label="FireFusion home" onclick="goScreen('overview')">
       <div class="topnav-mark">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.3 2C10.2 4.6 8.9 6.3 8 8.2C6.9 10.6 6.3 12.3 6.6 14.4C7 17.2 9 19.6 12 19.6C15 19.6 17.3 17.1 17.1 14C16.9 11.6 15.6 10.1 14.9 8C14.5 6.8 14.6 5.8 15 4.5C13.9 4.9 13.3 5.6 12.9 6.6C12.6 5 12.5 3.6 12.3 2Z" fill="#7A3A20"/><path d="M12.5 6.5C11.2 8.4 10.3 9.7 9.8 11.1C9.2 12.7 9 13.9 9.3 15.3C9.6 16.9 10.9 18.1 12.3 18C13.9 17.9 15 16.5 14.8 14.6C14.6 13 13.8 12 13.3 10.6C13 9.8 13.1 9.1 13.4 8.2C12.9 8.4 12.6 8.7 12.4 9.1C12.4 8.2 12.4 7.4 12.5 6.5Z" fill="#FF6B35"/><path d="M12.6 10.5C11.8 11.8 11.3 12.7 11.1 13.6C10.9 14.6 11 15.4 11.5 16C12 16.6 12.8 16.6 13.3 16C13.8 15.4 13.9 14.5 13.5 13.6C13.2 12.9 12.7 12.4 12.5 11.6C12.4 11.2 12.5 10.9 12.6 10.5Z" fill="#F2C14E"/></svg>
       </div>
       <span class="topnav-title">FireFusion</span>
-    </div>
-    <div aria-live="polite" class="chip data-loading" id="data-load-status" role="status">Loading demo data…</div>
+    </button>
     <div class="topnav-links" id="topnav-links" role="list">
       <button class="topnav-btn active" data-screen="overview" aria-current="page">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11l2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -844,7 +865,6 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
           <p>Sensor-harmonized wildfire intelligence — Bangladesh pilot</p>
         </div>
         <div class="topbar-right">
-          <div class="chip" title="Results come from a saved snapshot of the dataset, not a live feed." tabindex="0">Offline cache</div>
         </div>
       </div>
       <div class="page-pad">
@@ -866,7 +886,7 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
           </div>
           <div class="stat-cell">
             <div class="num">—</div>
-            <div class="lbl">Overlap correlation, harmonized — not available in the cached dataset.</div>
+            <div class="lbl">Overlap correlation, harmonized — not available in this build.</div>
           </div>
           <div class="stat-cell">
             <div class="num">26<span>yrs</span></div>
@@ -886,17 +906,17 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
           <button class="btn-text" onclick="goScreen('methods')">Full methodology →</button>
         </div>
         <div class="pipeline">
-          <div class="pipe-step done"><div class="pn">Stage 1</div><div class="pt">Normalisation</div><div class="pd">FIRMS columns → canonical schema, UTC → Asia/Dhaka</div></div>
-          <div class="pipe-step done"><div class="pn">Stage 2</div><div class="pt">Spatio-temporal clustering</div><div class="pd">DBSCAN haversine groups same-day detections into fire events</div></div>
-          <div class="pipe-step upcoming"><div class="pn">Stage 3</div><div class="pt">Calibration</div><div class="pd">Detectability matching + Poisson sensor factor</div></div>
-          <div class="pipe-step upcoming"><div class="pn">Stage 4</div><div class="pt">Seasonal baseline / anomaly</div><div class="pd">Day-of-year percentile vs. seasonal history</div></div>
-          <div class="pipe-step upcoming"><div class="pn">Stage 5</div><div class="pt">Validation</div><div class="pd">Overlap correlation, step-change, bootstrap CI</div></div>
+          <div class="pipe-step done"><div class="pn">Stage 1</div><div class="pt">Normalisation</div><div class="pd">FIRMS columns → canonical schema, UTC → Asia/Dhaka</div><div class="pipe-visual" data-stage="normalisation"></div></div>
+          <div class="pipe-step done"><div class="pn">Stage 2</div><div class="pt">Spatio-temporal clustering</div><div class="pd">DBSCAN haversine groups same-day detections into fire events</div><div class="pipe-visual" data-stage="clustering"></div></div>
+          <div class="pipe-step upcoming"><div class="pn">Stage 3</div><div class="pt">Calibration</div><div class="pd">Detectability matching + Poisson sensor factor</div><div class="pipe-visual" data-stage="calibration"></div></div>
+          <div class="pipe-step upcoming"><div class="pn">Stage 4</div><div class="pt">Seasonal baseline / anomaly</div><div class="pd">Day-of-year percentile vs. seasonal history</div><div class="pipe-visual" data-stage="seasonal"></div></div>
+          <div class="pipe-step upcoming"><div class="pn">Stage 5</div><div class="pt">Validation</div><div class="pd">Overlap correlation, step-change, bootstrap CI</div><div class="pipe-visual" data-stage="validation"></div></div>
         </div>
 
         <div class="region-grid">
           <div class="card">
-            <h4>Raw vs. harmonized, last 30 days</h4>
-            <div class="mini-bar-wrap" id="overview-mini-chart"></div>
+            <h4>Raw vs. harmonized daily counts</h4>
+            <div class="mini-bar-wrap" id="overview-mini-chart" role="img" aria-label="Raw and harmonized event counts by date"></div>
             <div style="display:flex; gap:18px; margin-top:14px; font-size:12px; color:var(--text-dim);">
               <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:var(--fire-dim);display:inline-block"></span>Raw count</span>
               <span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:var(--sat-dim);display:inline-block"></span>Harmonized</span>
@@ -905,27 +925,9 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
           <div class="card">
             <h4>Derived results</h4>
             <div class="alert-row derived-row" tabindex="0" role="button" aria-label="Derived results: not available. Activate for details." onclick="this.classList.toggle('expanded')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('expanded');}">
-              <div><div class="at">Not available</div><div class="ad">No anomaly or sensor-factor result in the cached dataset.</div>
-                <div class="derived-detail">Anomaly and sensor-factor outputs need the seasonal baseline engine (System Design §7.4), which has not been run on this cached dataset. Click again to hide.</div>
+              <div><div class="at">Not available</div><div class="ad">No anomaly or sensor-factor result is available.</div>
+                <div class="derived-detail">Anomaly and sensor-factor outputs need the seasonal baseline engine (System Design §7.4), which has not been run. Click again to hide.</div>
               </div>
-            </div>
-          </div>
-          <div class="card span-full" style="padding:18px 22px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
-              <div>
-                <div style="font-size:14px; font-weight:600;">Cached dataset</div>
-                <div style="font-size:12px; color:var(--text-dim); margin-top:3px;">Identifiers for the cached products</div>
-              </div>
-              <button class="btn btn-ghost" id="cache-log-toggle" style="font-size:13px; padding:9px 16px;" aria-expanded="false" aria-controls="cache-log-body">View cache log</button>
-            </div>
-            <div id="cache-log-body">
-              <table class="param-table">
-                <tr><td>MODIS_C6.1</td><td>cached</td></tr>
-                <tr><td>VIIRS_SNPP_NRT</td><td>cached</td></tr>
-                <tr><td>VIIRS_NOAA20_NRT</td><td>cached</td></tr>
-                <tr><td>VIIRS_NOAA21_NRT</td><td>cached</td></tr>
-                <tr><td>NASA GIBS tiles</td><td>pre-cached, pilot bbox</td></tr>
-              </table>
             </div>
           </div>
         </div>
@@ -1059,7 +1061,7 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
             <span>p90</span>
             <span>p95 — extreme</span>
           </div>
-          <p style="font-size:12.5px; color:var(--text-dim); margin-top:14px; line-height:1.6;">Anomaly percentile not available — the seasonal baseline engine (System Design §7.4) has not been run for this cached dataset. This view is reserved for historical-rarity context only; it would never be a spread or danger forecast.</p>
+          <p style="font-size:12.5px; color:var(--text-dim); margin-top:14px; line-height:1.6;">Anomaly percentile not available — the seasonal baseline engine (System Design §7.4) has not been run. This view is reserved for historical-rarity context only; it would never be a spread or danger forecast.</p>
         </div>
 
       </div>
@@ -1103,17 +1105,17 @@ button:focus-visible, .day-cell:focus-visible, .fire-dot:focus-visible, .toc-chi
 
         <div class="section-head"><h3>Score composition</h3></div>
         <div class="card" id="cl-score-components">
-          <p style="font-size:13px; color:var(--text-dim);">Score component values not available for the current cached data.</p>
+          <p style="font-size:13px; color:var(--text-dim);">Score component values not available for the current data.</p>
         </div>
 
         <div class="section-head"><h3>Detection timeline</h3></div>
         <div class="card">
-          <p style="font-size:13px; color:var(--text-dim);">Detection records not available for the current cached data.</p>
+          <p style="font-size:13px; color:var(--text-dim);">Detection records not available for the current data.</p>
         </div>
 
         <div class="section-head"><h3>Member detections</h3></div>
         <div class="card">
-          <p style="font-size:13px; color:var(--text-dim);">Detection records not available for the current cached data.</p>
+          <p style="font-size:13px; color:var(--text-dim);">Detection records not available for the current data.</p>
         </div>
 
       </div>
@@ -1320,15 +1322,6 @@ document.addEventListener('click', (e)=>{
   if(!e.target.closest('.topnav')) closeTopnavSheet();
 });
 
-// ============== CACHE LOG TOGGLE ==============
-document.getElementById('cache-log-toggle').addEventListener('click', function(){
-  const body = document.getElementById('cache-log-body');
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  this.setAttribute('aria-expanded', String(!isOpen));
-  this.textContent = isOpen ? 'View cache log' : 'Hide cache log';
-});
-
 // ============== METHODS: TOC scroll + active highlight ==============
 let tocClickScrolling = false;
 document.querySelectorAll('.toc-chip').forEach(chip=>{
@@ -1372,7 +1365,7 @@ document.querySelectorAll('.toc-chip').forEach(chip=>{
 
 // ============== CALENDAR: year nav (demo range 2024–2026) ==============
 let calYear = 2026;
-// Only 2026 has cached data, so year navigation is limited to it.
+// Only 2026 has data, so year navigation is limited to it.
 const calYearMin = 2026, calYearMax = 2026;
 function refreshYearButtons(){
   document.getElementById('cal-prev-year').disabled = calYear <= calYearMin;
@@ -1386,12 +1379,6 @@ document.getElementById('cal-next-year').addEventListener('click', ()=>{
   if(calYear < calYearMax){ calYear++; refreshYearButtons(); buildCalendar(calYear); }
 });
 refreshYearButtons();
-
-// ============== SCREEN 1: honest unavailable state ==============
-(function(){
-  const wrap = document.getElementById('overview-mini-chart');
-  wrap.innerHTML = '<div class="mini-bar-note">Not available in the cached dataset</div>';
-})();
 
 // ============== SCREEN 2: MAP ==============
 // Demo fixture for 15 Mar 2026 (System Design §5.3 / §6.2). Rendering only — no clustering in-browser.
@@ -1616,7 +1603,7 @@ function buildCalendar(year){
         cell.style.background = 'var(--fire)';
         cell.title = label+' — harmonized '+fx.harmonized_event_count+' ('+fx.source+')';
       } else {
-        cell.title = label+' — no cached data';
+        cell.title = label+' — no data available';
         cell.style.opacity = '0.6';
         cell.classList.add('no-data');
       }
@@ -1634,7 +1621,7 @@ function buildCalendar(year){
           document.getElementById('cal-sel-raw').innerHTML = fx.raw_event_count+' <small>raw detections</small>';
           document.getElementById('cal-sel-raw-sub').textContent = 'raw_event_count · before clustering and calibration';
         } else {
-          document.getElementById('cal-sel-count').innerHTML = '<small>Not available — no cached aggregate for this day</small>';
+          document.getElementById('cal-sel-count').innerHTML = '<small>Not available — no aggregate for this day</small>';
           document.getElementById('cal-sel-interval').textContent = 'harmonized_event_count · interval unavailable';
           document.getElementById('cal-sel-raw').innerHTML = '<small>Not available</small>';
           document.getElementById('cal-sel-raw-sub').textContent = 'raw_event_count · unavailable';
@@ -1657,7 +1644,7 @@ function renderAnomalyFor(iso){
     note.textContent = 'Observed '+ANOMALY_FIXTURE.observed+' · empirical percentile '+ANOMALY_FIXTURE.percentile+' against the day-of-year baseline.';
   } else {
     chip.textContent = 'Not available';
-    note.textContent = 'Anomaly percentile not available for this date — the seasonal baseline (System Design §7.4) has not been run for this cached dataset. Percentiles describe historical rarity only; they are not a spread or danger forecast.';
+    note.textContent = 'Anomaly percentile not available for this date — the seasonal baseline (System Design §7.4) has not been run. Percentiles describe historical rarity only; they are not a spread or danger forecast.';
   }
 }
 // ============== VALIDATION: demo run (no backend) ==============
@@ -1714,7 +1701,7 @@ function renderClusterEvidence(){
   const clusterId = 'CL_2026-03-15_'+d.id;
   topId.textContent = clusterId;
   heading.textContent = d.corroborated ? 'Corroborated fire event, 15 Mar 2026' : 'Single-sensor fire event, 15 Mar 2026';
-  centroid.textContent = 'Cached cluster · lat/lon centroid not shown';
+  centroid.textContent = 'Cluster · lat/lon centroid not shown';
   badges.innerHTML = '';
   const addBadge=(t,cls)=>{ const b=document.createElement('span'); b.className='badge'+(cls?' '+cls:''); b.textContent=t; badges.appendChild(b); };
   if(d.corroborated) addBadge('✓ Corroborated','corroborated');
@@ -1732,7 +1719,7 @@ function renderClusterEvidence(){
     ['event_score', 'not available']
   ];
   fields.innerHTML = rows.map(([k,v])=>'<tr><td>'+k+'</td><td>'+v+'</td></tr>').join('');
-  // event_score is not in the cached fixture. When a real score (0-1) is available,
+  // event_score is not in this fixture. When a real score (0-1) is available,
   // wire it in here and the ring/glow will recolor automatically by severity.
   const eventScore = d.event_score; // undefined in current fixture
   if(typeof eventScore === 'number'){
@@ -1745,7 +1732,7 @@ function renderClusterEvidence(){
     ring.style.strokeDashoffset = 289;
     setRingSeverity(null);
   }
-  compBox.innerHTML = '<p style="font-size:13px; color:var(--text-dim);">Score component values not available for the current cached data. Event score is not shown because no cached value exists.</p>' + renderIllustrativeBreakdown(d);
+  compBox.innerHTML = '<p style="font-size:13px; color:var(--text-dim);">Score component values not available for the current data. Event score is not shown because no value exists.</p>' + renderIllustrativeBreakdown(d);
 }
 // Illustrative only: shows the shape of the score breakdown. Not derived from real data.
 function renderIllustrativeBreakdown(d){
@@ -1765,14 +1752,13 @@ function renderIllustrativeBreakdown(d){
 const routeParams = new URLSearchParams(window.location.search);
 const routeClusterId = routeParams.get('cluster');
 const initialScreen = routeParams.get('screen');
-const dataLoadStatus = document.getElementById('data-load-status');
-
 function isRecord(value){
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 function validateDemoData(payload){
   if(!isRecord(payload) || payload.status !== 'ok' || !isRecord(payload.map_data_by_date) ||
-    !isRecord(payload.calendar_fixture) || typeof payload.default_map_date !== 'string'){
+    !isRecord(payload.calendar_fixture) || typeof payload.default_map_date !== 'string' ||
+    !Array.isArray(payload.pipeline_fixture) || payload.pipeline_fixture.length !== 5){
     throw new Error('Demo data file has an invalid top-level structure.');
   }
   for(const [date, clusters] of Object.entries(payload.map_data_by_date)){
@@ -1800,18 +1786,77 @@ function validateDemoData(payload){
       throw new Error('Demo calendar data contains an invalid daily aggregate.');
     }
   }
+  const expectedPipelineStages = ['normalisation','clustering','calibration','seasonal','validation'];
+  payload.pipeline_fixture.forEach((stage, index)=>{
+    if(!isRecord(stage) || stage.id !== expectedPipelineStages[index] ||
+      !Array.isArray(stage.metrics) || stage.metrics.length !== 2 ||
+      stage.metrics.some(metric=>!isRecord(metric) || typeof metric.label !== 'string' ||
+        typeof metric.display !== 'string' || !Number.isFinite(metric.value) ||
+        (metric.ratio !== null && (!Number.isFinite(metric.ratio) || metric.ratio<0 || metric.ratio>1)))){
+      throw new Error('Pipeline data contains an invalid stage metric.');
+    }
+  });
   if(!Array.isArray(payload.map_data_by_date[payload.default_map_date])){
     throw new Error('The default map date has no cluster data.');
   }
   return payload;
 }
 
+function renderPipelineVisualizations(stages){
+  stages.forEach(stage=>{
+    const container = document.querySelector('.pipe-visual[data-stage="'+stage.id+'"]');
+    stage.metrics.forEach(metric=>{
+      const row = document.createElement('div');
+      row.className = 'pipe-metric';
+      const label = document.createElement('span');
+      label.className = 'pipe-metric-label';
+      label.textContent = metric.label;
+      const value = document.createElement('span');
+      value.className = 'pipe-metric-value';
+      value.textContent = metric.display;
+      row.append(label, value);
+      if(metric.ratio !== null){
+        const track = document.createElement('span');
+        track.className = 'pipe-metric-track';
+        const fill = document.createElement('span');
+        fill.className = 'pipe-metric-fill';
+        fill.style.setProperty('--bar-width', (metric.ratio*100)+'%');
+        track.append(fill);
+        row.append(track);
+      }
+      container.append(row);
+    });
+  });
+}
+
+function renderOverviewCounts(calendarFixture){
+  const wrap = document.getElementById('overview-mini-chart');
+  const entries = Object.entries(calendarFixture).sort(([first],[second])=>first.localeCompare(second));
+  const maximum = Math.max(...entries.flatMap(([,day])=>[day.raw_event_count,day.harmonized_event_count]),1);
+  const dateFormatter = new Intl.DateTimeFormat('en', {month:'short', day:'numeric', timeZone:'UTC'});
+  entries.forEach(([iso, day])=>{
+    const pair = document.createElement('span');
+    pair.className = 'mini-bar-pair';
+    pair.title = dateFormatter.format(new Date(iso+'T00:00:00Z'))+
+      ': '+day.raw_event_count+' raw, '+day.harmonized_event_count+' harmonized';
+    const columns = document.createElement('span');
+    columns.className = 'mini-bar-columns';
+    columns.setAttribute('aria-hidden','true');
+    [day.raw_event_count, day.harmonized_event_count].forEach(count=>{
+      const bar = document.createElement('i');
+      bar.style.height = Math.max(3, count/maximum*100)+'%';
+      columns.append(bar);
+    });
+    const date = document.createElement('span');
+    date.className = 'mini-bar-date';
+    date.textContent = dateFormatter.format(new Date(iso+'T00:00:00Z'));
+    pair.append(columns, date);
+    wrap.append(pair);
+  });
+}
+
 function showDataLoadError(error){
   const message = error instanceof Error ? error.message : 'Unknown data-loading error.';
-  dataLoadStatus.textContent = 'Demo data unavailable';
-  dataLoadStatus.title = message;
-  dataLoadStatus.classList.remove('data-loading','data-loaded');
-  dataLoadStatus.classList.add('data-error');
   const alert = document.createElement('div');
   alert.className = 'data-load-error';
   alert.setAttribute('role','alert');
@@ -1827,13 +1872,11 @@ async function loadDemoData(){
     const payload = validateDemoData(await response.json());
     MAP_DATA_BY_DATE = payload.map_data_by_date;
     CALENDAR_FIXTURE = payload.calendar_fixture;
+    renderPipelineVisualizations(payload.pipeline_fixture);
+    renderOverviewCounts(payload.calendar_fixture);
     currentMapIso = payload.default_map_date;
     clusterData = MAP_DATA_BY_DATE[currentMapIso];
     RAW_OBSERVATION_COUNT = clusterData.reduce((sum,cluster)=>sum+cluster.n_modis+cluster.n_viirs,0);
-    dataLoadStatus.textContent = 'Demo data loaded';
-    dataLoadStatus.title = payload.label || 'Illustrative demo data loaded from /data/dummy-data.json.';
-    dataLoadStatus.classList.remove('data-loading','data-error');
-    dataLoadStatus.classList.add('data-loaded');
     renderMap('raw');
     buildCalendar(calYear);
     renderAnomalyFor(null);
