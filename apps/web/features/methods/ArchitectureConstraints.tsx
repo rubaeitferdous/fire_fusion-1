@@ -13,7 +13,7 @@ const constraints = [
   },
   {
     icon: "zap",
-    text: "Sub-second API responses and hackathon portability are targets.",
+    text: "Sub-second API responses and deployment portability are targets.",
   },
 ] as const;
 

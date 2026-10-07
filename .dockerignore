@@ -1,0 +1,33 @@
+# Dependency and build artifacts
+node_modules
+.next
+.next-dev
+dist
+build
+out
+.turbo
+
+# Version control & tooling
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Documentation and local configs
+*.md
+README.md
+docker-compose-local.yml
+docker-compose*.local.yml
+docker-compose*.override.yml
+prometheus.yml
+otel-collector.yml
+grafana/
+
+# System and logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

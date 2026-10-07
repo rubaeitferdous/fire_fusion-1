@@ -1,147 +1,265 @@
-# Turborepo with OpenTelemetry
+# FireFusion · NASA Space Apps Challenge 2026
 
-This example shows a Turborepo monorepo with a local [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/), [Prometheus](https://prometheus.io/), and [Grafana](https://grafana.com/) for visualizing Turborepo's OTEL metrics.
+<div align="center">
 
-## Using this example
+**Harmonization of MODIS and VIIRS Hot Spots**  
+*Global Thermal Sensing & Wildfire Continuity Across 25 Years of Earth Observations*
 
-Run the following command:
+[![Challenge: Harmonization of MODIS and VIIRS Hot Spots](https://img.shields.io/badge/NASA%20Space%20Apps%202026-Challenge%20%2309-blue.svg)](https://www.spaceappschallenge.org/)
+[![Track](https://img.shields.io/badge/Theme-The%20Next%20Frontier-0B5FD9.svg)](#)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16.3-black.svg?logo=next.js)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19.2-61DAFB.svg?logo=react)](https://react.dev/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-2.11-EF4444.svg?logo=turborepo)](https://turbo.build/)
+[![Bun](https://img.shields.io/badge/Bun-1.2.21-F472B6.svg?logo=bun)](https://bun.sh/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC.svg?logo=tailwind-css)](https://tailwindcss.com/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
-```sh
-npx create-turbo@latest -e with-otel
-```
+</div>
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## Executive Summary
 
-### Apps and Packages
+As NASA transitions away from the historic **MODIS** sensors (scheduled for decommissioning in late 2026) and data access models for **Suomi-NPP** evolve, global wildfire science faces an urgent data continuity crisis. 
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+The Visible Infrared Imaging Radiometer Suite (**VIIRS**) offers a sharp 375 m pixel resolution, whereas the Moderate Resolution Imaging Spectroradiometer (**MODIS**) records at 1 km. Because the finer VIIRS sensor detects significantly smaller and cooler thermal anomalies, naive counts create an **artificial ~3× surge** at the sensor handover point. This jump is an instrument artifact—not an actual surge in fires.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+**FireFusion** solves this challenge by delivering an open-source spatio-temporal harmonization engine and interactive exploration platform. By clustering detections onto a standardized common grid, modeling cross-sensor detectability, and computing rolling seasonal baselines, FireFusion bridges 25 years of NASA Earth observation data into a unified, scientifically sound record.
 
-### Utilities
+> [!IMPORTANT]
+> **Safety & Science Disclaimer:** FireFusion is an exploratory analytical platform developed for satellite thermal anomaly research and trend analysis. It is not an operational tactical wildfire prediction tool or real-time evacuation system.
 
-This Turborepo has some additional tools already setup for you:
+---
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## The Killer Demonstration: Raw vs. Harmonized
 
-### OTEL Collector Stack
+In raw active fire series across South Asia and global hotspots, the 2012+ sensor transition appears to show fire frequency tripling overnight.
 
-The included `docker-compose.yml` starts:
+- **With Raw Data**: The handover creates an uncalibrated step-change artifact, corrupting multi-decadal climate analysis and trend statistics.
+- **With FireFusion Harmonization**: Same-day detections within uniform 5.5 km grid cells are collapsed, eliminating sensor-resolution inflation while preserving true physical fire signals and revealing long-term climate dynamics.
 
-- **`otel-collector`** -- OTLP gRPC receiver with a debug exporter and Prometheus exporter
-- **`prometheus`** -- scrapes metrics from the collector
-- **`grafana`** -- pre-configured with a Turborepo dashboard (anonymous access enabled)
+---
 
-| Service             | Port |
-| ------------------- | ---- |
-| OTLP gRPC           | 4317 |
-| Collector metrics   | 8888 |
-| Prometheus exporter | 8889 |
-| Prometheus UI       | 9090 |
-| Grafana UI          | 3005 |
+## Key Capabilities
 
-## How to use
+1. **Interactive Hotspot & Activity Map (`/map`)**:
+   - Spatial visualization of NASA FIRMS thermal anomaly markers with sensor layer filtering (MODIS Terra/Aqua vs. VIIRS NOAA-20/21/S-NPP).
+   - Granular inspection of cluster boundaries, Fire Radiative Power (FRP), and confidence classifications.
 
-### 1. Start the collector stack
+2. **Burning Activity Calendar Heatmap (`/calendar`)**:
+   - Year-by-day matrix visualizing annual burning seasons, seasonal agricultural fire peaks, and fire frequency shifts.
 
-```sh
-docker compose up -d
-```
+3. **Cluster Evidence Explorer (`/evidence` & `/evidence/[clusterId]`)**:
+   - DBSCAN spatio-temporal clustering breakdown detailing detection counts, sensor agreement rates, peak radiative power, and timeline progression.
 
-Confirm it's ready:
+4. **Cross-Sensor Validation Suite (`/validation`)**:
+   - Quantitative evaluation during concurrent dual-observation overlap periods.
+   - Directly measures and reports the correlation improvement between raw cross-sensor series and harmonized cross-sensor series.
 
-```sh
-docker compose logs otel-collector
-# Look for: "Everything is ready. Begin running and processing data."
-```
+5. **Seasonal Baseline & Anomaly Engine**:
+   - Evaluates: *"Is current thermal activity unusual for this region and time of year?"*
+   - Computes historical percentile distributions (e.g. 90th percentile) against a rolling day-of-year window.
 
-### 2. Configure Turborepo OTEL environment variables
+6. **Scientific Methodology & Guardrails (`/methods`)**:
+   - Transparent documentation of formulas, grid cell thresholds, uncertainty models, and observational constraints.
 
-**macOS / Linux:**
+---
 
-```sh
-export TURBO_EXPERIMENTAL_OTEL_ENABLED=1
-export TURBO_EXPERIMENTAL_OTEL_ENDPOINT=https://localhost:4317
-export TURBO_EXPERIMENTAL_OTEL_RESOURCE="service.name=turborepo,env=local"
-export TURBO_EXPERIMENTAL_OTEL_METRICS_TASK_DETAILS=1
-```
+## Harmonization Methodology: 5-Stage Pipeline
 
-**Windows (PowerShell):**
-
-```powershell
-$env:TURBO_EXPERIMENTAL_OTEL_ENABLED=1
-$env:TURBO_EXPERIMENTAL_OTEL_ENDPOINT="https://localhost:4317"
-$env:TURBO_EXPERIMENTAL_OTEL_RESOURCE="service.name=turborepo,env=local"
-$env:TURBO_EXPERIMENTAL_OTEL_METRICS_TASK_DETAILS=1
-```
-
-### 3. Run a task
-
-```sh
-turbo build
-```
-
-### 4. Verify metrics
-
-**Collector logs (debug exporter)**:
-
-```sh
-docker compose logs --tail=100 otel-collector
-```
-
-You should see entries like:
+FireFusion implements a deterministic 5-stage harmonization workflow:
 
 ```text
-Metrics {"otelcol.component.id": "debug", "otelcol.signal": "metrics", "resource metrics": 1, "metrics": 4, "data points": 4}
-Resource attributes:
-     -> env: Str(local)
-     -> service.name: Str(turborepo)
-Metric #0
-     -> Name: turbo.run.duration_ms
-Metric #1
-     -> Name: turbo.run.tasks.attempted
-Metric #2
-     -> Name: turbo.run.tasks.failed
-Metric #3
-     -> Name: turbo.run.tasks.cached
+┌───────────────────────┐
+│  01. ACQUISITION      │ ──► NASA FIRMS MODIS (1 km) + VIIRS (375 m NOAA-20/21/S-NPP)
+└───────────┬───────────┘
+            ▼
+┌───────────────────────┐
+│  02. NORMALIZATION    │ ──► Canonical schema mapping; filter confidence >= 50
+└───────────┬───────────┘
+            ▼
+┌───────────────────────┐
+│  03. CLUSTERING       │ ──► Spatio-temporal DBSCAN & 5.5 km common grid binning
+└───────────┬───────────┘
+            ▼
+┌───────────────────────┐
+│  04. CALIBRATION      │ ──► Poisson GLM cross-sensor detectability adjustment
+└───────────┬───────────┘
+            ▼
+┌───────────────────────┐
+│  05. AGGREGATION      │ ──► Continuous harmonized daily & seasonal time-series
+└───────────────────────┘
 ```
 
-**Prometheus UI**: Click any of these links to open pre-filled queries:
+### Grid Binning Logic
 
-- [All run metrics](http://localhost:9090/graph?g0.expr=%7B__name__%3D~%22turbo_run_.%2B%22%7D&g0.tab=0) -- `{__name__=~"turbo_run_.+"}`
-- [Run duration (histogram)](http://localhost:9090/graph?g0.expr=turbo_run_duration_ms_sum+%2F+turbo_run_duration_ms_count&g0.tab=0) -- avg duration per run
-- [Tasks attempted](http://localhost:9090/graph?g0.expr=turbo_run_tasks_attempted_total&g0.tab=0)
-- [Tasks cached](http://localhost:9090/graph?g0.expr=turbo_run_tasks_cached_total&g0.tab=0)
-- [Tasks failed](http://localhost:9090/graph?g0.expr=turbo_run_tasks_failed_total&g0.tab=0)
-- [Cache hit rate](<http://localhost:9090/graph?g0.expr=turbo_run_tasks_cached_total+%2F+clamp_min(turbo_run_tasks_attempted_total%2C+1)&g0.tab=0>)
+```python
+# Collapse same-day detections onto a standard grid (e.g., 5.5 km ~ 0.05°)
+# A single cell-day with one or multiple detections counts as one active fire footprint.
+deg = cell_km / 111.0
+cell_x = floor(longitude / deg)
+cell_y = floor(latitude  / deg)
+```
 
-**Grafana dashboard**: Open `http://localhost:3001` -- the **Turborepo Runs** dashboard is pre-configured and loads automatically. No login required. The dashboard includes:
+### Scientific Honesty Guardrails
 
-- Run duration (avg and p95) and runs over time
-- Tasks attempted, cached, failed, and cache hit rate
-- **Task breakdown** -- duration by task (build, lint, check-types, etc.), cache status by task, a detail table with package names, and time-series charts for tracking changes across runs
+- **Hotspots are Detections, Not Perimeters**: Thermal anomaly markers indicate active combustion within a pixel, not perimeter polygons or total burned area.
+- **Categorical Confidence**: Detections are grouped into mapped confidence tiers rather than over-interpreting raw confidence floats.
+- **Traceable Provenance**: Every metric displays its underlying sensor source, satellite platform, and processing parameters.
+- **Offline Reliability**: The platform bundles offline data fixtures to ensure robust demonstration even in zero-connectivity environments.
 
-### 5. Cleanup
+---
 
-```sh
+## NASA Datasets Used & Cited
+
+FireFusion directly utilizes and cites the following NASA Earth Science data products:
+
+| Dataset / Product | Platform / Sensor | Spatial Resolution | Provider |
+| :--- | :--- | :--- | :--- |
+| **MCD14DL (Active Fire)** | Terra & Aqua (MODIS) | 1 km | NASA FIRMS / LANCE |
+| **VNP14IMGTDL (Active Fire)** | Suomi-NPP (VIIRS) | 375 m | NASA FIRMS / LANCE |
+| **VJ114IMGTDL (Active Fire)** | NOAA-20 & NOAA-21 (VIIRS) | 375 m | NASA FIRMS / LANCE |
+| **NASA POWER API** | Surface Meteorology (Wind, Temp, RH) | Gridded 0.5° | NASA POWER Project |
+| **Overlap Validation Cohort** | Dual-Sensor Concurrent Acquisitions | Multi-sensor | NASA Earthdata |
+
+---
+
+## Monorepo Architecture
+
+This project is built using a modern **Turborepo** monorepo managed with **Bun**:
+
+```text
+fire-fusion/
+├── apps/
+│   └── web/                         # Next.js 16 App Router application
+│       ├── app/                     # Route pages & screen layouts
+│       ├── components/              # App UI components & layout frames
+│       ├── config/                  # Navigation & metadata configurations
+│       ├── content/                 # Scientific pipeline & guardrail definitions
+│       ├── features/                # Domain modules (map, calendar, validation, methods)
+│       └── public/                  # Static assets & pre-cached offline data fixtures
+├── packages/
+│   ├── ui/                          # Shared UI package with 50+ Shadcn UI components
+│   │   ├── src/components/ui/       # Radix UI primitives & styled components
+│   │   ├── src/hooks/               # Shared hooks (use-toast, use-mobile)
+│   │   ├── src/lib/utils.ts         # Tailwind class merging (cn utility)
+│   │   └── tailwind.config.ts       # Central theme & semantic CSS variables
+│   ├── typescript-config/           # Monorepo TypeScript base configs
+│   └── eslint-config/               # Shared ESLint rules
+├── docker-compose.yml               # Production container configuration
+├── docker-compose-local.yml         # Local OpenTelemetry observability stack
+├── Dockerfile                       # Multi-stage container build (Bun + Node 20 Alpine)
+├── LICENSE                          # Apache-2.0 open-source license
+└── turbo.json                       # Turborepo task pipeline
+```
+
+---
+
+## Available Application Routes
+
+| Path | Screen | Purpose |
+| :--- | :--- | :--- |
+| `/` | **Overview** | System summary, mission objective, and navigation hub |
+| `/map` | **Fire Activity Map** | Interactive geospatial hotspot exploration and filtering |
+| `/calendar` | **Burning Calendar** | Matrix calendar of daily active fire counts and seasonality |
+| `/evidence` | **Cluster Evidence** | In-depth cluster details, sensor agreement, and FRP trends |
+| `/evidence/[clusterId]` | **Cluster Deep Dive** | Specific evidence records for a targeted detection cluster |
+| `/validation` | **Model Validation** | Quantitative cross-sensor correlation and benchmark controls |
+| `/methods` | **Methods & Guardrails**| Scientific equations, pipeline stages, and sensor limits |
+
+---
+
+## Quickstart & Local Setup
+
+### Prerequisites
+
+- **Bun**: `v1.2.21` or higher ([Install Bun](https://bun.sh))
+- **Node.js**: `>= 20.9`
+- **Docker**: (optional, for containerized run)
+
+### 1. Clone & Install Dependencies
+
+```bash
+git clone https://github.com/<your-username>/fire-fusion.git
+cd fire-fusion
+bun install --frozen-lockfile
+```
+
+### 2. Start the Development Server
+
+```bash
+# Start all workspaces via Turborepo
+bun run dev
+
+# Or run only the web application
+bun run dev --filter=web
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+### 3. Quality & Verification Scripts
+
+```bash
+# Static TypeScript validation across all workspaces
+bun run check-types
+
+# ESLint inspection
+bun run lint
+
+# Monorepo production build
+bun run build
+```
+
+---
+
+## Container Deployment
+
+The application includes a production-ready, multi-stage [`Dockerfile`](./Dockerfile) and [`docker-compose.yml`](./docker-compose.yml) configured for standalone execution.
+
+```bash
+# Build and run container
+docker compose up --build -d
+
+# View application logs
+docker compose logs -f web
+
+# Stop container
 docker compose down
 ```
 
-## Useful Links
+The container runs with non-root security (`nextjs:nodejs`), pre-configured health checks (`wget http://127.0.0.1:3000/`), and minimal standalone traces (~100MB image).
 
-Learn more about the power of Turborepo:
+---
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+## Local Observability Stack
+
+For monitoring build pipelines and telemetry metrics during development, an OpenTelemetry stack is provided in [`docker-compose-local.yml`](./docker-compose-local.yml):
+
+```bash
+# Start OTEL Collector, Prometheus, and Grafana
+docker compose -f docker-compose-local.yml up -d
+
+# Stop telemetry stack
+docker compose -f docker-compose-local.yml down
+```
+
+- **Grafana Dashboard**: [http://localhost:3005](http://localhost:3005) (Anonymous viewer access enabled)
+- **Prometheus UI**: [http://localhost:9090](http://localhost:9090)
+
+---
+
+## NASA Space Apps Challenge Alignment
+
+| Judging Criteria | FireFusion Implementation |
+| :--- | :--- |
+| **Relevance** | Built directly on NASA FIRMS MODIS & VIIRS active fire data; addresses the real-world 2026 MODIS instrument retirement challenge. |
+| **Impact** | Unlocks 25 years of continuous thermal anomaly trends for researchers, climate modelers, and disaster responders without sensor bias. |
+| **Validity** | Implements transparent grid-collapsing algorithms, DBSCAN spatio-temporal clustering, and dual-observation overlap correlation verification. |
+| **Creativity** | Provides an intuitive dual-series toggle, interactive calendar heatmaps, and clear "is this unusual for this place" seasonal anomaly indicators. |
+| **Execution** | Fully typed Turborepo monorepo, zero type/lint errors, Next.js 16 standalone Docker builds, and complete offline capability. |
+
+---
+
+## License
+
+This project is licensed under the **Apache License 2.0** in accordance with NASA Space Apps Challenge guidelines. See the [LICENSE](./LICENSE) file for details.
