@@ -3,6 +3,7 @@ node_modules/
 
 # Next.js build outputs and caches
 .next/
+.next-dev/
 out/
 build/
 dist/
@@ -26,3 +27,8 @@ public/
 *.log
 .coverage/
 grafana/
+
+
+*.md
+*.yml
+.vscode
