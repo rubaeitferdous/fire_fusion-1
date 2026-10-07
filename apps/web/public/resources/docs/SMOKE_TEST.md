@@ -30,6 +30,7 @@ test log. Stop at the first failure in a section and record it before continuing
 ## 1. Navigation
 
 - [ ] Each top-nav button opens its screen: Overview, Map, Calendar, Cluster, Validation, Methods.
+- [ ] Clicking the FireFusion logo returns to Overview.
 - [ ] The active nav button is highlighted and has `aria-current="page"`.
 - [ ] Keys `1`–`6` switch to the matching screen. Keys do nothing while typing in an input.
 - [ ] On a narrow screen, the menu button opens the sheet. Choosing an item closes it. `Escape` closes it.
@@ -40,15 +41,14 @@ test log. Stop at the first failure in a section and record it before continuing
 - [ ] The "Open the map" button opens Map.
 - [ ] "See the evidence →" opens Validation.
 - [ ] "Full methodology →" opens Methods.
-- [ ] "Offline cache" chip shows its explanation on hover and on keyboard focus.
 - [ ] The "Derived results" card expands on click, and on Enter or Space. Clicking again collapses it.
-- [ ] The "Raw vs. harmonized" area shows the "Not available in the cached dataset" note.
-- [ ] "View cache log" expands and collapses. Its button text changes between "View" and "Hide", and `aria-expanded` changes too.
+- [ ] All five harmonization stages are visible in the Overview bento grid without horizontal scrolling on desktop, tablet, and mobile.
+- [ ] Fetched stage metrics populate all five pipeline cards, and the raw/harmonized chart displays the calendar fixture counts.
 
 ## 3. Map
 
 - [ ] Map subtitle shows "15 Mar 2026".
-- [ ] Map shows fire markers for 15 Mar 2026.
+- [ ] Map shows all 19 fire markers for 15 Mar 2026.
 - [ ] "Raw" and "Harmonized" toggles switch the marker style. The selected toggle has `aria-selected="true"`.
 - [ ] Each confidence filter (High, Nominal, Low) hides and shows its markers. At least one filter stays on.
 - [ ] Zoom `+`, `−` and reset (⟲) change the map zoom. Reset returns to the starting view.

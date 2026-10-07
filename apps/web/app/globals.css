@@ -34,8 +34,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(ellipse at 50% -28rem, rgb(79 195 232 / 8%), transparent 58%),
-    var(--background);
+    radial-gradient(ellipse at 50% -28rem, rgb(79 195 232 / 8%), transparent 58%), var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
   font-size: 1rem;
@@ -1259,12 +1258,42 @@ a:focus-visible {
   border-color: var(--strong-border);
   background-color: #111a28;
   background-image:
-    linear-gradient(to right, transparent calc(25% - 1px), var(--border) 25%, transparent calc(25% + 1px)),
-    linear-gradient(to right, transparent calc(50% - 1px), var(--border) 50%, transparent calc(50% + 1px)),
-    linear-gradient(to right, transparent calc(75% - 1px), var(--border) 75%, transparent calc(75% + 1px)),
-    linear-gradient(to bottom, transparent calc(25% - 1px), var(--border) 25%, transparent calc(25% + 1px)),
-    linear-gradient(to bottom, transparent calc(50% - 1px), var(--border) 50%, transparent calc(50% + 1px)),
-    linear-gradient(to bottom, transparent calc(75% - 1px), var(--border) 75%, transparent calc(75% + 1px));
+    linear-gradient(
+      to right,
+      transparent calc(25% - 1px),
+      var(--border) 25%,
+      transparent calc(25% + 1px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(50% - 1px),
+      var(--border) 50%,
+      transparent calc(50% + 1px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(75% - 1px),
+      var(--border) 75%,
+      transparent calc(75% + 1px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(25% - 1px),
+      var(--border) 25%,
+      transparent calc(25% + 1px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(50% - 1px),
+      var(--border) 50%,
+      transparent calc(50% + 1px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(75% - 1px),
+      var(--border) 75%,
+      transparent calc(75% + 1px)
+    );
 }
 
 .map-context {
@@ -1274,7 +1303,9 @@ a:focus-visible {
 
 .demo-map-marker {
   border-color: #111a28;
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 24%), 0 3px 12px rgb(0 0 0 / 45%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 24%),
+    0 3px 12px rgb(0 0 0 / 45%);
 }
 
 .demo-map-marker.harmonized-marker {

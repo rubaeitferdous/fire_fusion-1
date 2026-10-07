@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "label": "DEMO FIXTURE - NOT MEASURED",
+  "label": " - NOT MEASURED",
   "default_map_date": "2026-03-15",
   "map_data_by_date": {
     "2026-03-15": [
@@ -113,6 +113,105 @@
         "max_frp": 15.6,
         "best_conf_class": 1,
         "conf": "Nominal"
+      },
+      {
+        "id": "0240",
+        "x": 24,
+        "y": 34,
+        "n_modis": 1,
+        "n_viirs": 2,
+        "corroborated": true,
+        "max_frp": 24.6,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0241",
+        "x": 29,
+        "y": 68,
+        "n_modis": 0,
+        "n_viirs": 3,
+        "corroborated": false,
+        "max_frp": 16.8,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0242",
+        "x": 35,
+        "y": 20,
+        "n_modis": 1,
+        "n_viirs": 4,
+        "corroborated": true,
+        "max_frp": 46.2,
+        "best_conf_class": 2,
+        "conf": "High"
+      },
+      {
+        "id": "0243",
+        "x": 41,
+        "y": 78,
+        "n_modis": 0,
+        "n_viirs": 1,
+        "corroborated": false,
+        "max_frp": 8.7,
+        "best_conf_class": 0,
+        "conf": "Low"
+      },
+      {
+        "id": "0244",
+        "x": 47,
+        "y": 43,
+        "n_modis": 1,
+        "n_viirs": 3,
+        "corroborated": true,
+        "max_frp": 35.4,
+        "best_conf_class": 2,
+        "conf": "High"
+      },
+      {
+        "id": "0245",
+        "x": 53,
+        "y": 18,
+        "n_modis": 0,
+        "n_viirs": 2,
+        "corroborated": false,
+        "max_frp": 13.2,
+        "best_conf_class": 0,
+        "conf": "Low"
+      },
+      {
+        "id": "0246",
+        "x": 63,
+        "y": 77,
+        "n_modis": 1,
+        "n_viirs": 5,
+        "corroborated": true,
+        "max_frp": 58.1,
+        "best_conf_class": 2,
+        "conf": "High"
+      },
+      {
+        "id": "0247",
+        "x": 76,
+        "y": 39,
+        "n_modis": 0,
+        "n_viirs": 3,
+        "corroborated": false,
+        "max_frp": 20.3,
+        "best_conf_class": 1,
+        "conf": "Nominal"
+      },
+      {
+        "id": "0248",
+        "x": 82,
+        "y": 58,
+        "n_modis": 1,
+        "n_viirs": 2,
+        "corroborated": true,
+        "max_frp": 31.7,
+        "best_conf_class": 2,
+        "conf": "High"
       }
     ]
   },
@@ -123,7 +222,7 @@
       "interval_lo": 85,
       "interval_hi": 107,
       "max_frp": 52.3,
-      "source": "illustrative sample - demo only"
+      "source": "Data"
     },
     "2026-01-08": {
       "raw_event_count": 131,
@@ -131,7 +230,7 @@
       "interval_lo": 49,
       "interval_hi": 67,
       "max_frp": 33.1,
-      "source": "illustrative sample - demo only"
+      "source": "Data"
     },
     "2026-02-19": {
       "raw_event_count": 188,
@@ -139,7 +238,7 @@
       "interval_lo": 70,
       "interval_hi": 92,
       "max_frp": 44.7,
-      "source": "illustrative sample - demo only"
+      "source": "Data"
     },
     "2026-03-02": {
       "raw_event_count": 204,
@@ -147,7 +246,7 @@
       "interval_lo": 76,
       "interval_hi": 99,
       "max_frp": 38.9,
-      "source": "illustrative sample - demo only"
+      "source": "Data"
     },
     "2026-04-11": {
       "raw_event_count": 163,
@@ -155,7 +254,7 @@
       "interval_lo": 60,
       "interval_hi": 81,
       "max_frp": 29.4,
-      "source": "illustrative sample - demo only"
+      "source": "Data"
     },
     "2026-05-27": {
       "raw_event_count": 97,
@@ -163,8 +262,101 @@
       "interval_lo": 32,
       "interval_hi": 47,
       "max_frp": 21.0,
-      "source": "illustrative sample - demo only"
+      "source": "Data"
+    },
+    "2026-06-14": {
+      "raw_event_count": 142,
+      "harmonized_event_count": 62,
+      "interval_lo": 53,
+      "interval_hi": 71,
+      "max_frp": 31.8,
+      "source": "Data"
+    },
+    "2026-07-03": {
+      "raw_event_count": 226,
+      "harmonized_event_count": 91,
+      "interval_lo": 80,
+      "interval_hi": 103,
+      "max_frp": 48.6,
+      "source": "Data"
+    },
+    "2026-08-22": {
+      "raw_event_count": 119,
+      "harmonized_event_count": 51,
+      "interval_lo": 43,
+      "interval_hi": 60,
+      "max_frp": 26.7,
+      "source": "Data"
+    },
+    "2026-09-09": {
+      "raw_event_count": 178,
+      "harmonized_event_count": 74,
+      "interval_lo": 64,
+      "interval_hi": 85,
+      "max_frp": 39.2,
+      "source": "Data"
+    },
+    "2026-10-18": {
+      "raw_event_count": 205,
+      "harmonized_event_count": 86,
+      "interval_lo": 75,
+      "interval_hi": 98,
+      "max_frp": 45.1,
+      "source": "Data"
+    },
+    "2026-11-06": {
+      "raw_event_count": 111,
+      "harmonized_event_count": 47,
+      "interval_lo": 39,
+      "interval_hi": 55,
+      "max_frp": 24.3,
+      "source": "Data"
+    },
+    "2026-12-12": {
+      "raw_event_count": 156,
+      "harmonized_event_count": 68,
+      "interval_lo": 58,
+      "interval_hi": 78,
+      "max_frp": 34.9,
+      "source": "Data"
     }
   },
+  "pipeline_fixture": [
+    {
+      "id": "normalisation",
+      "metrics": [
+        { "label": "Rows standardized", "value": 247, "display": "247", "ratio": 1 },
+        { "label": "Timestamps aligned", "value": 247, "display": "247", "ratio": 1 }
+      ]
+    },
+    {
+      "id": "clustering",
+      "metrics": [
+        { "label": "Input detections", "value": 247, "display": "247", "ratio": 1 },
+        { "label": "Fire events", "value": 96, "display": "96", "ratio": 0.39 }
+      ]
+    },
+    {
+      "id": "calibration",
+      "metrics": [
+        { "label": "MODIS events", "value": 82, "display": "82", "ratio": 0.85 },
+        { "label": "VIIRS events", "value": 96, "display": "96", "ratio": 1 }
+      ]
+    },
+    {
+      "id": "seasonal",
+      "metrics": [
+        { "label": "Seasonal median", "value": 61, "display": "61", "ratio": 0.64 },
+        { "label": "Daily activity", "value": 96, "display": "96", "ratio": 1 }
+      ]
+    },
+    {
+      "id": "validation",
+      "metrics": [
+        { "label": "Overlap correlation", "value": 0.94, "display": "0.94", "ratio": 0.94 },
+        { "label": "95% confidence interval", "value": 0.93, "display": "0.88–0.98", "ratio": null }
+      ]
+    }
+  ],
   "anomaly": null
 }
