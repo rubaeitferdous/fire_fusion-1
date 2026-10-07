@@ -60,16 +60,16 @@ bun run start
 
 ## Available routes
 
-| Route | Screen |
-|---|---|
-| `/` | Overview |
-| `/map` | Fire activity map |
-| `/calendar` | Burning activity calendar |
-| `/evidence` | Cluster evidence, choosing a default cluster |
-| `/evidence/[clusterId]` | Cluster evidence for the specified cluster |
-| `/validation` | Validation metrics and demo run control |
-| `/methods` | Methods and limitations |
-| `/seasonal` | Redirects to `/calendar` |
+| Route                   | Screen                                       |
+| ----------------------- | -------------------------------------------- |
+| `/`                     | Overview                                     |
+| `/map`                  | Fire activity map                            |
+| `/calendar`             | Burning activity calendar                    |
+| `/evidence`             | Cluster evidence, choosing a default cluster |
+| `/evidence/[clusterId]` | Cluster evidence for the specified cluster   |
+| `/validation`           | Validation metrics and demo run control      |
+| `/methods`              | Methods and limitations                      |
+| `/seasonal`             | Redirects to `/calendar`                     |
 
 The prototype also supports direct links with `screen` and `cluster` query
 parameters. The Next.js route pages set the initial screen and, for an evidence
