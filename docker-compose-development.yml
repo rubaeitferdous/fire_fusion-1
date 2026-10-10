@@ -1,0 +1,185 @@
+# ==============================================================================
+# FireFusion - Development Infrastructure Stack
+#
+# Core Services:
+#   - postgres: PostgreSQL 17 relational database
+#   - duckdb: DuckDB analytical query engine for Parquet/GeoJSON/FIRMS datasets
+#   - mongodb: MongoDB 8 document database
+#   - redis: Redis 8 in-memory cache and pub/sub broker
+#
+# Optional Developer GUI Tools (Activated with: --profile tools):
+#   - duck-ui: Web workbench & SQL editor for DuckDB (http://localhost:5522)
+#   - adminer: Web interface for PostgreSQL (http://localhost:8080)
+#   - redis-commander: Web interface for Redis (http://localhost:8081)
+#   - mongo-express: Web interface for MongoDB (http://localhost:8082)
+#
+# Connection Strings (Local Development):
+#   - PostgreSQL: postgresql://fire-fusion:fire-fusion-pass@localhost:5432/fire-fusion
+#   - MongoDB:    mongodb://fire-fusion:fire-fusion-pass@localhost:27017/fire-fusion?authSource=admin
+#   - Redis:      redis://localhost:6379
+#   - DuckDB:     docker exec -it fire-fusion-duckdb /duckdb /data/fire_fusion.duckdb
+# ==============================================================================
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: fire-fusion-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-fire-fusion}
+      POSTGRES_USER: ${POSTGRES_USER:-fire-fusion}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fire-fusion-pass}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fire-fusion} -d ${POSTGRES_DB:-fire-fusion}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - fire-fusion-network
+
+  duckdb:
+    image: duckdb/duckdb:latest
+    container_name: fire-fusion-duckdb
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    working_dir: /data
+    environment:
+      HOME: /data
+      DUCKDB_DATABASE: /data/fire_fusion.duckdb
+    volumes:
+      - duckdb_data:/data
+      - ./:/workspace:ro
+    healthcheck:
+      test: ["CMD", "/duckdb", "-c", "SELECT 1;"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 2s
+    networks:
+      - fire-fusion-network
+
+  mongodb:
+    image: mongo:8
+    container_name: fire-fusion-mongodb
+    restart: unless-stopped
+    command: mongod --wiredTigerCacheSizeGB 0.5
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-fire-fusion}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-fire-fusion}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-fire-fusion-pass}
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", 'mongosh --quiet --eval "db.adminCommand(\"ping\").ok"']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - fire-fusion-network
+
+  redis:
+    image: redis:8-alpine
+    container_name: fire-fusion-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 3s
+    networks:
+      - fire-fusion-network
+
+  # ----------------------------------------------------------------------------
+  # Optional Developer GUI Tools (Activated with: --profile tools)
+  # ----------------------------------------------------------------------------
+  duck-ui:
+    image: ghcr.io/caioricciuti/duck-ui:latest
+    container_name: fire-fusion-duck-ui
+    restart: unless-stopped
+    profiles:
+      - tools
+    ports:
+      - "${DUCK_UI_PORT:-5522}:5522"
+    depends_on:
+      duckdb:
+        condition: service_healthy
+    networks:
+      - fire-fusion-network
+
+  adminer:
+    image: adminer:latest
+    container_name: fire-fusion-adminer
+    restart: unless-stopped
+    profiles:
+      - tools
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - fire-fusion-network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: fire-fusion-redis-commander
+    restart: unless-stopped
+    profiles:
+      - tools
+    ports:
+      - "${REDIS_COMMANDER_PORT:-8081}:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - fire-fusion-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: fire-fusion-mongo-express
+    restart: unless-stopped
+    profiles:
+      - tools
+    ports:
+      - "${MONGO_EXPRESS_PORT:-8082}:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME:-fire-fusion}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-fire-fusion-pass}
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - fire-fusion-network
+
+networks:
+  fire-fusion-network:
+    name: fire-fusion-network
+    driver: bridge
+
+volumes:
+  postgres_data:
+  duckdb_data:
+  mongodb_data:
+  redis_data:
